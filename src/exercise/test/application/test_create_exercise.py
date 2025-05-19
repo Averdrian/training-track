@@ -3,6 +3,7 @@ from exercise.application.create_exercise import CreateExercise, CreateExerciseC
 from exercise.domain.exceptions import NameIsEmpty
 from exercise.domain.models import Exercise
 from exercise.domain.repositories import ExercicesRepository
+from exercise.domain.value_objects import ExerciseName
 
 
 class FakeExerciseRepository(ExercicesRepository):
@@ -26,7 +27,7 @@ class TestCreateExercise:
         
         exercises = exercise_repository.all()
         assert len(exercises) == 1
-        assert exercises[0].name() == "Example_Exercise"
+        assert exercises[0].name() == ExerciseName(value="Example_Exercise")
         
     
     def test_raise_exception_when_name_is_empty(self) -> None:
