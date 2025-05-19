@@ -14,4 +14,5 @@ class CreateExercise:
         self._exercises_repository = exerciseRepository
     
     def execute(self, command: CreateExerciseCommand) -> None:
-        self._exercises_repository.save(Exercise())
+        exercise = Exercise.create(exercise_name=command.exercise_name)
+        self._exercises_repository.save(exercise)

@@ -21,9 +21,6 @@ class TestCreateExercise:
                 exercise_name="Example_Exercise"
             )
         )
-        
         exercises = exercise_repository.all()
         assert len(exercises) == 1
-        assert exercises[0].name == "Example_Exercise"
-        
-        
+        assert exercises[0].name() == "Example_Exercise"
