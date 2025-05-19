@@ -1,6 +1,6 @@
 
 
-from user.application.create_user import CreateUser
+from user.application.create_user import CreateUser, CreateUserCommand
 from user.domain.models import User
 from user.domain.repositories import UserRepository
 
@@ -23,8 +23,13 @@ class TestCreateUser:
         user_repository = FakeUserRepository()
         
         CreateUser(user_repository).execute(
-            User()
+            CreateUserCommand(
+                username="nombre_test",
+                email="email@test.com",
+                password="password-test"
+            )
         )
-        
+    
         assert len(user_repository.all()) == 1
+        
         
