@@ -1,4 +1,4 @@
-from exercise.application.create_exercise import CreateExercise
+from exercise.application.create_exercise import CreateExercise, CreateExerciseCommand
 from exercise.domain.models import Exercise
 from exercise.domain.repositories import ExercicesRepository
 
@@ -16,8 +16,14 @@ class FakeExerciseRepository(ExercicesRepository):
 class TestCreateExercise:
     def test_creates_exercise(self) -> None:
         exercise_repository = FakeExerciseRepository()
-        CreateExercise(exercise_repository).execute(Exercise())
+        CreateExercise(exercise_repository).execute(
+            CreateExerciseCommand(
+                exercise_name="Example_Exercise"
+            )
+        )
         
-        assert len(exercise_repository.all()) == 1
+        exercises = exercise_repository.all()
+        assert len(exercises) == 1
+        assert exercises[0].name == "Example_Exercise"
         
         
