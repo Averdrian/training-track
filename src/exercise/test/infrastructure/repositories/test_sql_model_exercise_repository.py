@@ -1,4 +1,3 @@
-import pytest
 from sqlmodel import Session, select
 from exercise.domain.models import Exercise
 from exercise.infrastructure.repositories import SQLModelExerciseRepository, psql_engine, ExerciseModel

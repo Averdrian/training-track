@@ -2,7 +2,6 @@
 
 
 from dataclasses import dataclass
-from user.domain.models import User
 from user.domain.repositories import UserRepository
 
 @dataclass
