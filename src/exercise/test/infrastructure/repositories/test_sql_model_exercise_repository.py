@@ -22,23 +22,27 @@ class TestSQLModelExerciseRepository:
             session.commit()
             
     def test_get_all_exercises_from_database(self) -> None:
-        repo = SQLModelExerciseRepository()
         
-        with Session(psql_engine) as session:
-            session.add(ExerciseModel(
-                name="Name1"
-            ))
-            session.add(ExerciseModel(
-                name="Name2"
-            ))
-            session.commit()
+        try:
+            repo = SQLModelExerciseRepository()
+        
+            with Session(psql_engine) as session:
+                session.add(ExerciseModel(
+                    name="Name1"
+                ))
+                session.add(ExerciseModel(
+                    name="Name2"
+                ))
+                session.commit()
+                
+            exercises = repo.all()
+            assert len(exercises) == 2
             
-        exercises = repo.all()
-        assert len(exercises) == 2
-        
-        with Session(psql_engine) as session:
-            session.delete(exercises[0])
-            session.delete(exercises[1])
-            session.commit()
+        finally:
+            with Session(psql_engine) as session:
+                exercises = session.exec(select(ExerciseModel).where((ExerciseModel.name == "Name1") | (ExerciseModel.name == "Name2"))).all()
+                for exercise in exercises:
+                    session.delete(exercise) 
+                session.commit()
         
             

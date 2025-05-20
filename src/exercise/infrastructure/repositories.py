@@ -15,8 +15,11 @@ class SQLModelExerciseRepository(ExercicesRepository):
     def all(self) -> list[Exercise]:
         with Session(psql_engine) as session:
             statement = select(ExerciseModel)
-            exercises = session.exec(statement).all()
-        return exercises
+            exercise_models = session.exec(statement).all()
+        return [
+            Exercise(exercise_name=exercise_model.name)
+            for exercise_model in exercise_models
+        ]
             
     
     def save(self, exercise: Exercise) -> None:
