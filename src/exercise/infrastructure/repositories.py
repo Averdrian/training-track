@@ -1,10 +1,11 @@
-from sqlmodel import Field, SQLModel, Session
+from sqlmodel import Field, SQLModel, Session, select
 from exercise.domain.models import Exercise
 from exercise.domain.repositories import ExercicesRepository
 from main import psql_engine
 
 
 class ExerciseModel(SQLModel, table=True):
+    __tablename__ = "exercises"
     id: int | None = Field(default=None, primary_key=True)
     name: str
 
@@ -12,7 +13,11 @@ SQLModel.metadata.create_all(psql_engine)
 
 class SQLModelExerciseRepository(ExercicesRepository):
     def all(self) -> list[Exercise]:
-        return None
+        with Session(psql_engine) as session:
+            statement = select(ExerciseModel)
+            exercises = session.exec(statement).all()
+        return exercises
+            
     
     def save(self, exercise: Exercise) -> None:
         exercise_model = ExerciseModel(

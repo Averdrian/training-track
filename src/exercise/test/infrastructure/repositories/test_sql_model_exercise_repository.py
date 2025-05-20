@@ -20,3 +20,25 @@ class TestSQLModelExerciseRepository:
             
             session.delete(exercise)
             session.commit()
+            
+    def test_get_all_exercises_from_database(self) -> None:
+        repo = SQLModelExerciseRepository()
+        
+        with Session(psql_engine) as session:
+            session.add(ExerciseModel(
+                name="Name1"
+            ))
+            session.add(ExerciseModel(
+                name="Name2"
+            ))
+            session.commit()
+            
+        exercises = repo.all()
+        assert len(exercises) == 2
+        
+        with Session(psql_engine) as session:
+            session.delete(exercises[0])
+            session.delete(exercises[1])
+            session.commit()
+        
+            
